@@ -1,0 +1,107 @@
+CREATE TABLE station(
+    stationId int PRIMARY KEY AUTO_INCREMENT,
+    stationName varchar(255),
+    Longitude Double,
+    Latitude Double
+);
+
+
+CREATE TABLE mrt(
+    mrtNo int PRIMARY KEY,
+    mrtName varchar(255),
+    mrtStartP1 int(11),
+    mrtStartP2 int(11),
+    FOREIGN KEY (mrtStartP1) REFERENCES station(stationId),
+    FOREIGN KEY (mrtStartP2) REFERENCES station(stationId)
+);
+
+
+CREATE TABLE stop(
+    stopId int PRIMARY KEY AUTO_INCREMENT,
+    stationId int(11),
+    mrtNo int(11),
+    orderNo int(11),
+    reachTimeFromP1 int(11),
+    reachTimeFromP2 int(11),
+    FOREIGN KEY (stationId) REFERENCES station(stationId),
+    FOREIGN KEY (mrtNo) REFERENCES mrt(mrtNo)
+);
+
+
+CREATE TABLE train(
+    trainId int PRIMARY KEY AUTO_INCREMENT,
+    trainName varchar(255),
+    trainNo int(11),
+    trainCapacity int(11)
+);
+
+
+
+CREATE TABLE mrtSchedule(
+    scheduleId int PRIMARY KEY AUTO_INCREMENT,
+    trainId int(11),
+    mrtNo int(11),
+    startStation int(11),
+    endStation int(11),
+    startTime DATETIME,
+    errorTime TIME,
+    FOREIGN KEY (trainId) REFERENCES train(trainId),
+    FOREIGN KEY (mrtNo) REFERENCES mrt(mrtNo),
+    FOREIGN KEY (startStation) REFERENCES station(stationId),
+    FOREIGN KEY (endStation) REFERENCES station(stationId)
+);
+
+
+
+
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Email` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL
+) ;
+
+
+CREATE TABLE `customer` (
+  `customerId` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `customerName` varchar(255) DEFAULT NULL,
+  `customerBankAcc` varchar(255) DEFAULT NULL,
+  `customerAddress` varchar(255) DEFAULT NULL,
+  `customerPhoneNumber` varchar(255) DEFAULT NULL,
+  `customerBloodGroup` varchar(10) DEFAULT NULL,
+  `customerBalance` double DEFAULT '0',
+  FOREIGN KEY (customerId) REFERENCES user(id)
+);
+
+
+CREATE TABLE `employee` (
+  `employeeId` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `employeeName` varchar(255) DEFAULT NULL,
+  `employeeBankAcc` varchar(255) DEFAULT NULL,
+  `employeeAddress` varchar(255) DEFAULT NULL,
+  `employeePhoneNumber` varchar(255) DEFAULT NULL,
+  `jobDescription` varchar(25) DEFAULT NULL,
+  `stationId` int(11) DEFAULT NULL,
+     FOREIGN KEY (stationId) REFERENCES station(stationId)
+);
+
+CREATE TABLE `ticketPrice` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `ticketType` varchar(255) DEFAULT NULL,
+  `ticketPrice` double DEFAULT NULL
+
+) ;
+
+
+CREATE TABLE `tickets` (
+  `ticketId` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `issueDate` datetime DEFAULT NULL,
+  `validDate` datetime DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `ticketType` int(11) NOT NULL,
+  `customerId` int(11) DEFAULT NULL,
+     FOREIGN KEY (ticketType) REFERENCES ticketPrice(id),
+     FOREIGN KEY (customerId) REFERENCES customer(customerId)
+
+);
