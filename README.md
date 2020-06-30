@@ -1,1 +1,1 @@
-# MetroRailBD
+A Non-profitable website to find best route for Metro Rail in Dhaka including time schedule and online ticket system. This was an award winning software project in "UIU Intra-University project show" developed by Husnul Abid (Me), Abdullah Al Rifat and Sheeyam Sarkar as a team.
